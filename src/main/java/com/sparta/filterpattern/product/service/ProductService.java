@@ -1,10 +1,13 @@
 package com.sparta.filterpattern.product.service;
 
+import com.sparta.filterpattern.product.filter.ProductCategoryFilter;
 import com.sparta.filterpattern.product.filter.ProductFilter;
 import com.sparta.filterpattern.product.filter.ProductSoldYnFilter;
 import com.sparta.filterpattern.product.model.Product;
 import com.sparta.filterpattern.product.repository.ProductRepository;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,29 +24,29 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductService {
 
-  private final ProductRepository repository;
+    private final ProductRepository repository;
 
-  private final ProductFilter filter = initFilter();
+    private final ProductFilter filter = initFilter();
 
-  public Product save(Product product) {
-    return repository.save(product);
-  }
+    public Product save(Product product) {
+        return repository.save(product);
+    }
 
-  /**
-   * 전체 찾기.
-   *
-   * @return 조회된 상품
-   */
-  public List<Product> findAll() {
-    return repository.findAll()
-        .stream()
-        .filter(p -> filter.check(p))
-        .toList();
+    /**
+     * 전체 찾기.
+     *
+     * @return 조회된 상품
+     */
+    public List<Product> findAll() {
+        return repository.findAll()
+                .stream()
+                .filter(p -> filter.check(p))
+                .toList();
 
-  }
+    }
 
-  private ProductFilter initFilter() {
-    ProductFilter productFilter = new ProductSoldYnFilter();
-    return productFilter;
-  }
+    private ProductFilter initFilter() {
+        ProductFilter productFilter = new ProductSoldYnFilter();
+        return productFilter.add(new ProductCategoryFilter());
+    }
 }

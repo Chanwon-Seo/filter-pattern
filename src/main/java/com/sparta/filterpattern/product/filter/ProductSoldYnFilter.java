@@ -24,4 +24,5 @@ public class ProductSoldYnFilter extends ProductFilter {
     // 다음 필터 조건 체크
     return checkNext(product);
   }
+
 }
